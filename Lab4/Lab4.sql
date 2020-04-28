@@ -47,19 +47,15 @@ GROUP BY room_category.name;
 -- 5. Дать список последних проживавших клиентов по всем комнатам гостиницы "Космос", выехавшим в апреле с указанием даты выезда. 
 -- доработать вывод записи room_in_booking по наименьшему id
 
-SELECT room_in_booking.id_room, MAX(room_in_booking.checkout_date) AS eviction
-INTO #temp_table FROM room_in_booking
+SELECT client.name, room.id_room, room_in_booking.checkout_date
+FROM room_in_booking
 	LEFT JOIN room ON room.id_room = room_in_booking.id_room
-WHERE room.id_hotel = 1 AND checkout_date BETWEEN '2019-04-01' AND '2019-04-30'
-GROUP BY room_in_booking.id_room
-
-SELECT client.name, MAX(#temp_table.eviction) AS eviction, #temp_table.id_room
-FROM #temp_table
-	LEFT JOIN room_in_booking ON #temp_table.id_room = room_in_booking.id_room AND #temp_table.eviction = room_in_booking.checkout_date
-	LEFT JOIN booking ON room_in_booking.id_booking = booking.id_booking
-	LEFT JOIN client ON booking.id_client = client.id_client
-GROUP BY client.name, #temp_table.id_room
-ORDER BY client.name
+	LEFT JOIN hotel ON hotel.id_hotel = room.id_hotel
+	LEFT JOIN room_category ON room_category.id_room_category = room.id_room_category
+	LEFT JOIN booking ON booking.id_booking = room_in_booking.id_booking
+	LEFT JOIN client ON client.id_client = booking.id_client
+WHERE hotel.name = 'Космос'AND (checkout_date BETWEEN '2019-04-01'::date AND '2019-04-30'::date)
+GROUP BY room.id_room, client.name, room_in_booking.checkout_date;
 
 -- 6. Продлить на 2 дня дату проживания в гостинице "Космос" всем клиентам комнат категории "Бизнес", которые заселились 10 мая.
 UPDATE room_in_booking
