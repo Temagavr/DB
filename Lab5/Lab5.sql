@@ -1,7 +1,7 @@
 /*CREATE DATABASE pharmacy;
 USE pharmacy;*/
 
---1. Добавить внешние ключи
+--1. Р”РѕР±Р°РІРёС‚СЊ РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE [production] 
 ADD FOREIGN KEY (id_medicine) REFERENCES [medicine] (id_medicine);
 
@@ -20,26 +20,26 @@ ADD FOREIGN KEY (id_dealer) REFERENCES [dealer] (id_dealer);
 ALTER TABLE [order] 
 ADD FOREIGN KEY (id_pharmacy) REFERENCES [pharmacy] (id_pharmacy);
 
---2. Выдать информацию по всем заказам лекарства “Кордерон” компании “Аргус” с указанием названий аптек, дат, объема заказов
+--2. Р’С‹РґР°С‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ РїРѕ РІСЃРµРј Р·Р°РєР°Р·Р°Рј Р»РµРєР°СЂСЃС‚РІР° вЂњРљРѕСЂРґРµСЂРѕРЅвЂќ РєРѕРјРїР°РЅРёРё вЂњРђСЂРіСѓСЃвЂќ СЃ СѓРєР°Р·Р°РЅРёРµРј РЅР°Р·РІР°РЅРёР№ Р°РїС‚РµРє, РґР°С‚, РѕР±СЉРµРјР° Р·Р°РєР°Р·РѕРІ
 
 SELECT * FROM [order]
 LEFT JOIN [pharmacy] ON [order].id_pharmacy = [pharmacy].id_pharmacy
 LEFT JOIN [production] ON [order].id_production = [production].id_production
 LEFT JOIN [company] ON [production].id_company = [company].id_company
 LEFT JOIN [medicine] ON [production].id_medicine = [medicine].id_medicine
-WHERE [medicine].name = 'Кордерон' AND [company].name = 'Аргус';
+WHERE [medicine].name = 'РљРѕСЂРґРµСЂРѕРЅ' AND [company].name = 'РђСЂРіСѓСЃ';
 
---3. Дать список лекарств компании “Фарма”, на которые не были сделаны заказы до 25 января
+--3. Р”Р°С‚СЊ СЃРїРёСЃРѕРє Р»РµРєР°СЂСЃС‚РІ РєРѕРјРїР°РЅРёРё вЂњР¤Р°СЂРјР°вЂќ, РЅР° РєРѕС‚РѕСЂС‹Рµ РЅРµ Р±С‹Р»Рё СЃРґРµР»Р°РЅС‹ Р·Р°РєР°Р·С‹ РґРѕ 25 СЏРЅРІР°СЂСЏ
 
 SELECT [medicine].name FROM [medicine]
 LEFT JOIN [production] ON [production].id_medicine = [medicine].id_medicine
 LEFT JOIN [company] ON [production].id_company = [company].id_company
 LEFT JOIN [order] ON [production].id_production = [order].id_production
-WHERE [company].name = 'Фарма'
+WHERE [company].name = 'Р¤Р°СЂРјР°'
 GROUP BY [medicine].id_medicine, [medicine].name
 HAVING MIN([order].date) >= '2019-01-25';
 
---4. Дать минимальный и максимальный баллы лекарств каждой фирмы, которая оформила не менее 120 заказов
+--4. Р”Р°С‚СЊ РјРёРЅРёРјР°Р»СЊРЅС‹Р№ Рё РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ Р±Р°Р»Р»С‹ Р»РµРєР°СЂСЃС‚РІ РєР°Р¶РґРѕР№ С„РёСЂРјС‹, РєРѕС‚РѕСЂР°СЏ РѕС„РѕСЂРјРёР»Р° РЅРµ РјРµРЅРµРµ 120 Р·Р°РєР°Р·РѕРІ
 
 SELECT [company].name, MIN(rating) AS min_rate, MAX(rating) AS max_rate
 FROM [production]
@@ -48,8 +48,8 @@ LEFT JOIN [company] ON [production].id_company = [company].id_company
 GROUP BY [production].id_company, [company].name
 HAVING COUNT([order].id_order) >= 120;
 
---5. Дать списки сделавших заказы аптек по всем дилерам компании “AstraZeneca”. Если у дилера нет заказов, в названии аптеки
---проставить NULL
+--5. Р”Р°С‚СЊ СЃРїРёСЃРєРё СЃРґРµР»Р°РІС€РёС… Р·Р°РєР°Р·С‹ Р°РїС‚РµРє РїРѕ РІСЃРµРј РґРёР»РµСЂР°Рј РєРѕРјРїР°РЅРёРё вЂњAstraZenecaвЂќ. Р•СЃР»Рё Сѓ РґРёР»РµСЂР° РЅРµС‚ Р·Р°РєР°Р·РѕРІ, РІ РЅР°Р·РІР°РЅРёРё Р°РїС‚РµРєРё
+--РїСЂРѕСЃС‚Р°РІРёС‚СЊ NULL
 
 SELECT [pharmacy].name, [dealer].name, [dealer].id_dealer FROM [dealer]
 LEFT JOIN [order] ON [dealer].id_dealer = [order].id_dealer
@@ -58,7 +58,7 @@ LEFT JOIN [company] ON [dealer].id_company = [company].id_company
 WHERE [company].name = 'AstraZeneca'
 ORDER BY [dealer].name
 
---6. Уменьшить на 20% стоимость всех лекарств, если она превышает 3000, а длительность лечения не более 7 дней
+--6. РЈРјРµРЅСЊС€РёС‚СЊ РЅР° 20% СЃС‚РѕРёРјРѕСЃС‚СЊ РІСЃРµС… Р»РµРєР°СЂСЃС‚РІ, РµСЃР»Рё РѕРЅР° РїСЂРµРІС‹С€Р°РµС‚ 3000, Р° РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ Р»РµС‡РµРЅРёСЏ РЅРµ Р±РѕР»РµРµ 7 РґРЅРµР№
  
 --BEGIN TRANSACTION 
 	UPDATE [production]
@@ -69,7 +69,7 @@ ORDER BY [dealer].name
 		WHERE [medicine].cure_duration <= 7 AND [production].price > 3000);
 --COMMIT;
 
---7. Добавить необходимые индексы
+--7. Р”РѕР±Р°РІРёС‚СЊ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РёРЅРґРµРєСЃС‹
 
 CREATE NONCLUSTERED INDEX [IX_dealer_id_company] ON [dbo].[dealer]
 (
