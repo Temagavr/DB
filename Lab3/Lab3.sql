@@ -1,12 +1,12 @@
 USE Lab3;
 --1.INSERT
 
---БЕЗ УКАЗАНИЯ ПОЛЕЙ
+--Р‘Р•Р— РЈРљРђР—РђРќРРЇ РџРћР›Р•Р™
 INSERT INTO [Client]
 VALUES 
 	('ALEX', 'SMITH', '8912345678', 'TTT@MAIL.RU' );
 
---С УКАЗАНИЕМ ПОЛЕЙ
+--РЎ РЈРљРђР—РђРќРР•Рњ РџРћР›Р•Р™
 INSERT INTO [Client] (Name, Surname, Phone_number)
 VALUES 
 	('JOHN', 'SMITH', '8912123678');
@@ -19,7 +19,7 @@ INSERT INTO [Realtor]
 VALUES 
 	('ALFI', 'SOLOMANCE', '02', 2);
 
---С ВЫБОРКОЙ ИЗ ДРУГОЙ ТАБЛИЦЫ 
+--РЎ Р’Р«Р‘РћР РљРћР™ РР— Р”Р РЈР“РћР™ РўРђР‘Р›РР¦Р« 
 INSERT INTO [Appeal] (Id_Client) SELECT Id_Client FROM Client;
 
 	/*
@@ -38,27 +38,27 @@ VALUES
 
 --2.DELETE
 
---УДАЛЕНИЕ ВСЕХ ЗАПИСЕЙ
+--РЈР”РђР›Р•РќРР• Р’РЎР•РҐ Р—РђРџРРЎР•Р™
 DELETE [Appeal];
 
---УДАЛЕНИЕ ОДНОЙ ЗАПИСИ 
+--РЈР”РђР›Р•РќРР• РћР”РќРћР™ Р—РђРџРРЎР 
 DELETE FROM [Appeal] WHERE Id_Client = 1;
 
---УДАЛЕНИЕ ВСЕХ ЗАПИСЕЙ
+--РЈР”РђР›Р•РќРР• Р’РЎР•РҐ Р—РђРџРРЎР•Р™
 TRUNCATE TABLE [Appeal];
 
 --3.UPDATE
 
---ОБНОВЛЕНИЕ ВСЕХ ЗАПИСЕЙ
+--РћР‘РќРћР’Р›Р•РќРР• Р’РЎР•РҐ Р—РђРџРРЎР•Р™
 UPDATE [Appeal]
 SET Id_Realtor = 1;
 
---По условию обновляя один атрибут
+--РџРѕ СѓСЃР»РѕРІРёСЋ РѕР±РЅРѕРІР»СЏСЏ РѕРґРёРЅ Р°С‚СЂРёР±СѓС‚
 UPDATE [Client]
 SET Name = 'Sam'
 WHERE Surname = 'SMITH';
 
---По условию обновляя несколько атрибутов
+--РџРѕ СѓСЃР»РѕРІРёСЋ РѕР±РЅРѕРІР»СЏСЏ РЅРµСЃРєРѕР»СЊРєРѕ Р°С‚СЂРёР±СѓС‚РѕРІ
 UPDATE [Realtor]
 SET Name = 'ARTUR',
 	Surname = 'SHELBY'
@@ -66,41 +66,41 @@ WHERE Surname = 'SOLOMANCE';
 
 --4.SELECT
 
---ВЫБОРКА НЕКОТОРЫХ АТРИБУТОВ
+--Р’Р«Р‘РћР РљРђ РќР•РљРћРўРћР Р«РҐ РђРўР РР‘РЈРўРћР’
 SELECT Id_Client, Name, Surname FROM [Client];
 
---ПОЛНАЯ ВЫБОРКА 
+--РџРћР›РќРђРЇ Р’Р«Р‘РћР РљРђ 
 SELECT * FROM [Realtor];
 
---ВЫБОРКА С УСЛОВИЕМ 
+--Р’Р«Р‘РћР РљРђ РЎ РЈРЎР›РћР’РР•Рњ 
 SELECT Id_Client, Name, Surname FROM [Client] WHERE Name = 'Sam';
 
 --5.SELECT ORDER BY + TOP(LIMIT)
---С сортировкой по возрастанию ASC + ограничение вывода количества записей
+--РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ ASC + РѕРіСЂР°РЅРёС‡РµРЅРёРµ РІС‹РІРѕРґР° РєРѕР»РёС‡РµСЃС‚РІР° Р·Р°РїРёСЃРµР№
 SELECT TOP 5 * FROM [Client]
 ORDER BY Name ASC;
 
---С сортировкой по убыванию DESC
+--РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ СѓР±С‹РІР°РЅРёСЋ DESC
 SELECT TOP 5 * FROM [Client]
 ORDER BY Name DESC;
 
---С сортировкой по двум атрибутам + ограничение вывода количества записей
+--РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РґРІСѓРј Р°С‚СЂРёР±СѓС‚Р°Рј + РѕРіСЂР°РЅРёС‡РµРЅРёРµ РІС‹РІРѕРґР° РєРѕР»РёС‡РµСЃС‚РІР° Р·Р°РїРёСЃРµР№
 SELECT TOP 5 Name, Surname
 FROM [Client]
 ORDER BY Name ASC, Surname DESC;
 
---С сортировкой по первому атрибуту, из списка извлекаемых
+--РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РїРµСЂРІРѕРјСѓ Р°С‚СЂРёР±СѓС‚Сѓ, РёР· СЃРїРёСЃРєР° РёР·РІР»РµРєР°РµРјС‹С…
 SELECT TOP 5 Name, Surname
 FROM [Client]
 ORDER BY 1 ASC;
 
---6.РАБОТА С ДАТАМИ
+--6.Р РђР‘РћРўРђ РЎ Р”РђРўРђРњР
 
---WHERE по дате
+--WHERE РїРѕ РґР°С‚Рµ
 SELECT * FROM [Appeal] 
 WHERE Date = '2020-03-31';
 
---ВЫБОРКА ТОЛЬКО ГОДА
+--Р’Р«Р‘РћР РљРђ РўРћР›Р¬РљРћ Р“РћР”Рђ
 SELECT YEAR(DATE) FROM [Appeal];
 
 --7.SELECT GROUP BY
@@ -141,22 +141,22 @@ HAVING COUNT(Id_Company) > 1;
 
 --9.SELECT JOIN
 
--- LEFT JOIN двух таблиц и WHERE по одному из атрибутов
+-- LEFT JOIN РґРІСѓС… С‚Р°Р±Р»РёС† Рё WHERE РїРѕ РѕРґРЅРѕРјСѓ РёР· Р°С‚СЂРёР±СѓС‚РѕРІ
 SELECT * FROM [Appeal] LEFT JOIN Realtor ON Appeal.Id_Realtor = Realtor.Id_Realtor WHERE YEAR(Appeal.Date) > 2002;
 
---RIGHT JOIN. Получить такую же выборку, как и в 5.1
+--RIGHT JOIN. РџРѕР»СѓС‡РёС‚СЊ С‚Р°РєСѓСЋ Р¶Рµ РІС‹Р±РѕСЂРєСѓ, РєР°Рє Рё РІ 5.1 (РєР°Рє СЏ РїРѕРЅСЏР» РЅР°РґРѕ РєР°Рє РІ 9.1 Р° РЅРµ РІ 5.1)
 SELECT TOP 5 * FROM [Appeal] RIGHT JOIN Realtor ON Appeal.Id_Realtor = Realtor.Id_Realtor WHERE YEAR(Appeal.Date) > 2002
 ORDER BY Id_Client ASC;
 
---LEFT JOIN трех таблиц + WHERE по атрибуту из каждой таблицы
+--LEFT JOIN С‚СЂРµС… С‚Р°Р±Р»РёС† + WHERE РїРѕ Р°С‚СЂРёР±СѓС‚Сѓ РёР· РєР°Р¶РґРѕР№ С‚Р°Р±Р»РёС†С‹
 SELECT * FROM [Client] LEFT JOIN Appeal ON Client.Id_Client = Appeal.Id_Client
 LEFT JOIN Realtor ON Appeal.Id_Realtor = Realtor.Id_Realtor
 WHERE Realtor.Phone_number = '02' AND Client.Id_Client = 1 AND YEAR(Appeal.Date) > 2018; 
 
---FULL OUTER JOIN двух таблиц
+--FULL OUTER JOIN РґРІСѓС… С‚Р°Р±Р»РёС†
 SELECT * FROM [Realtor] FULL OUTER JOIN Company ON Realtor.Id_Company = Company.Id_Company; 
 
---10.ПОДЗАПРОСЫ
+--10.РџРћР”Р—РђРџР РћРЎР«
 
 SELECT * FROM [Apartament]
 WHERE Id_Company IN (SELECT TOP 5 Id_Company FROM [Company]);
