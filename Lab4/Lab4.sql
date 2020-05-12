@@ -54,7 +54,7 @@ FROM room_in_booking
 	LEFT JOIN room_category ON room_category.id_room_category = room.id_room_category
 	LEFT JOIN booking ON booking.id_booking = room_in_booking.id_booking
 	LEFT JOIN client ON client.id_client = booking.id_client
-WHERE hotel.name = 'Космос'AND (checkout_date BETWEEN '2019-04-01'::date AND '2019-04-30'::date)
+WHERE hotel.name = 'Космос'AND (checkout_date >='2019-04-01' AND checkout_date <= '2019-04-30')
 GROUP BY room.id_room, client.name, room_in_booking.checkout_date;
 
 -- 6. Продлить на 2 дня дату проживания в гостинице "Космос" всем клиентам комнат категории "Бизнес", которые заселились 10 мая.
@@ -67,17 +67,20 @@ WHERE hotel.name = 'Космос' AND room_category.name = 'Бизнес' AND ro
 
 --7. Найти все "пересекающиеся" варианты проживания.
 SELECT *
-FROM room_in_booking booking_2, room_in_booking booking_1
+FROM room_in_booking booking_1, room_in_booking booking_2
 WHERE booking_1.id_room = booking_2.id_room AND
-	(booking_2.checkin_date <= booking_1.checkin_date AND booking_1.checkout_date < booking_2.checkout_date)
+	(booking_1.checkin_date <= booking_2.checkin_date AND booking_2.checkin_date < booking_1.checkout_date)
 ORDER BY booking_1.id_room_in_booking;
-
 
 -- 8. Создать бронирование в транзакции
 BEGIN TRANSACTION
-	INSERT INTO booking VALUES(8, '2020-04-28');  
-COMMIT;
-
+	--declare @id_booking int;
+	--select max(id_booking) from booking; 
+	INSERT INTO booking (id_client, booking_date) VALUES(8, '2020-04-28');  
+	INSERT INTO room_in_booking (id_booking, id_room, checkin_date, checkout_date)
+	VALUES (2001, 8, '2020-04-28', '2020-05-11');
+--COMMIT;
+rollback;
 
 -- 9. Добавить необходимые индексы для всех таблиц
 CREATE NONCLUSTERED INDEX [IX_room_id_booking_checkin_date-checkout_date] ON [dbo].[room_in_booking]

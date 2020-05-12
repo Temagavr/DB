@@ -35,9 +35,11 @@ SELECT [medicine].name FROM [medicine]
 LEFT JOIN [production] ON [production].id_medicine = [medicine].id_medicine
 LEFT JOIN [company] ON [production].id_company = [company].id_company
 LEFT JOIN [order] ON [production].id_production = [order].id_production
-WHERE [company].name = 'Фарма'
+WHERE [company].name = 'Фарма' AND [production].id_production NOT IN (
+	SELECT [order].id_production FROM [order]
+	WHERE [order].date < '2019-01-25')
 GROUP BY [medicine].id_medicine, [medicine].name
-HAVING MIN([order].date) >= '2019-01-25';
+--HAVING MIN([order].date) < '2019-01-25';
 
 --4. Дать минимальный и максимальный баллы лекарств каждой фирмы, которая оформила не менее 120 заказов
 
@@ -56,7 +58,8 @@ LEFT JOIN [order] ON [dealer].id_dealer = [order].id_dealer
 LEFT JOIN [pharmacy] ON [order].id_pharmacy = [pharmacy].id_pharmacy
 LEFT JOIN [company] ON [dealer].id_company = [company].id_company
 WHERE [company].name = 'AstraZeneca'
-ORDER BY [dealer].name
+ORDER BY [dealer].id_dealer
+
 
 --6. Уменьшить на 20% стоимость всех лекарств, если она превышает 3000, а длительность лечения не более 7 дней
  
